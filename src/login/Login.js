@@ -29,11 +29,10 @@ class NormalLoginForm extends React.Component {
 
   // 修改手机号码
   changeMobile = (e) => {
-    var self = this;
+    let self = this;
     let mobile = e.target.value;
 
     if (mobile.length === 11) {
-console.log(">>>>>>")
       if (Validate.isMobile(mobile)) {
         self.props.actions.changeMobileSucc(mobile);
       } else {
@@ -44,15 +43,28 @@ console.log(">>>>>>")
     }
   }
 
+  setCaptchaImg = () => {
+    this.props.actions.showCaptchaModal();
+  }
+
+  cancel = () => {
+    this.props.actions.cancelCaptchaModal()
+  }
+
+  sendCode = () => {
+    let mobile = this.props.login.mobile;
+  }
+
   // 修改短信验证码
   changeCaptcha = (e) => {
+    var self = this;
     let captcha = e.target.value;
-    const { mobile } = this.props.login;
+    const { mobile } = self.props.login;
 
     if (captcha.length === 6) {
-      this.props.actions.changeCaptchaSucc(captcha);
+      self.props.actions.changeCaptchaSucc(captcha);
     } else {
-      this.props.actions.changeCaptchaFail();
+      self.props.actions.changeCaptchaFail();
     }
   }
 
@@ -61,19 +73,19 @@ console.log(">>>>>>")
     const { getFieldDecorator } = this.props.form;
 
     let text = '获取验证码';
-    let disabled = false;
+    let disabled = true;
 
     // 1、手机号验证通过, 未点击"获取验证码"按钮
-    // 2、手机号验证通过, 未点击"获取验证码"按钮
+    // 2、手机号验证通过, 已点击"获取验证码"按钮
     // 3、手机号未验证通过, default
-    if (captcha_state === 'toSend') {
-      disabled = true;
+    if (captcha_state === 'tobe_send') {
+      disabled = false;
     } else if (captcha_state === 'Sending') {
       disabled = true;
       text = `${count}秒后重发`;
     }
 
-    const captcha_modal = captcha_modalable ? <Captcha sendCode={this.sendCode} showable={this.state.modal} cancel={this.cancel} /> : null
+    const captcha_modal = captcha_modalable ? <Captcha sendCode={this.sendCode} showable={captcha_modalable} cancel={this.cancel} /> : null
 
     return (
       <div>

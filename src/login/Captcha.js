@@ -37,10 +37,11 @@ class Captcha extends Component {
 
   render() {
     const { random } = this.props.captcha;
+
     return (
       <div>
         <Modal
-          visible={this.props.visible}
+          visible={this.props.showable}
           title="请输入图形验证码"
           onOk={this.handleOk}
           onCancel={this.handleCancel}

@@ -1,6 +1,8 @@
 import { 
   CHANGE_MOBILE_SUCC,
   CHANGE_MOBILE_FAIL,
+  SHOW_CAPTCHA_MODAL,
+  CANCEL_CAPTCHA_MODAL,
   CHANGE_CAPTCHA_SUCC,
   CHANGE_CAPTCHA_FAIL,
 } from '../../actions/login';
@@ -21,16 +23,25 @@ export default function login(state=initState, action) {
       return {
         ...state,
         mobile: action.mobile,
-        captcha_modal: true,
         captcha_state: 'tobe_send',
       }
     // 手机号验证失败
     case CHANGE_MOBILE_FAIL:
       return {
         ...state,
-        captcha_modal: false,
+        captcha_modalable: false,
         captcha_state: 'waiting',
       };
+    case SHOW_CAPTCHA_MODAL:
+      return {
+        ...state,
+        captcha_modalable: true,
+      }
+    case CANCEL_CAPTCHA_MODAL:
+      return {
+        ...state,
+        captcha_modalable: false,
+      }
     // 验证码校验成功
     case CHANGE_CAPTCHA_SUCC:
       return {
