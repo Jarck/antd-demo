@@ -13,7 +13,7 @@ const initState = {
   count: 60,
   captcha_modalable: false,
   captcha_state: 'waiting',
-  loginable: false,
+  loginable: true,
 }
 
 export default function login(state=initState, action) {

@@ -17,7 +17,7 @@ class NormalLoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (err) { return };
 
-      const { mobile, captcha } = this.props.session;
+      const { mobile, captcha } = this.props.login;
       const params = {
         phone: mobile,
         verify_code: captcha,
@@ -29,7 +29,7 @@ class NormalLoginForm extends React.Component {
 
   // 修改手机号码
   changeMobile = (e) => {
-    let self = this;
+    var self = this;
     let mobile = e.target.value;
 
     if (mobile.length === 11) {
@@ -43,16 +43,19 @@ class NormalLoginForm extends React.Component {
     }
   }
 
+  // 设置图片验证码
   setCaptchaImg = () => {
     this.props.actions.showCaptchaModal();
   }
 
-  cancel = () => {
+  cancelCaptchaModal = () => {
     this.props.actions.cancelCaptchaModal()
   }
 
+  // 发送短信验证码
   sendCode = () => {
     let mobile = this.props.login.mobile;
+    this.props.actions.sendAuthCode(this, mobile);
   }
 
   // 修改短信验证码
@@ -85,7 +88,7 @@ class NormalLoginForm extends React.Component {
       text = `${count}秒后重发`;
     }
 
-    const captcha_modal = captcha_modalable ? <Captcha sendCode={this.sendCode} showable={captcha_modalable} cancel={this.cancel} /> : null
+    const captcha_modal = captcha_modalable ? <Captcha sendCode={this.sendCode} showable={captcha_modalable} cancel={this.cancelCaptchaModal} /> : null
 
     return (
       <div>
@@ -121,7 +124,9 @@ class NormalLoginForm extends React.Component {
             })(
               <Checkbox>记住我</Checkbox>
             )}
-            <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
+            <Button type="primary" htmlType="submit" className="login-form-button" disabled={loginable}>
+              登录
+            </Button>
           </FormItem>
         </Form>
       </div>

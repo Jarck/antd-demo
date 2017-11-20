@@ -8,30 +8,37 @@ import * as LoginAction from '../actions/login';
 
 class Captcha extends Component {
   handleOk = () => {
-    let { captcha, random } = this.props.captcha;
+    var self = this;
+    let { captcha, random } = self.props.captcha;
     if (random === captcha) {
-      this.props.sendCode();
+      self.props.sendCode();
     } else {
       message.error('请输入正确的图形验证码');
     }
   }
 
   handleCancel = () => {
-    this.props.cancel();
+    var self = this;
+    self.props.cancel();
   }
 
+  // 验证码输入
   inputCaptcha = (e) => {
+    var self = this;
     let value = e.target.value;
-    this.props.actions.getCaptcha(value);
+    self.props.actions.getCaptcha(value);
   }
 
+  // 重设图片验证码
   resetCaptcha = (e) => {
-    this.props.actions.resetRandom();
+    var self = this;
+    self.props.actions.resetRandom();
   }
 
   handleOnEnterDown = (e) => {
+    var self = this;
     if (e.keyCode === 13) {
-      this.handleOk();
+      self.handleOk();
     }
   }
 
