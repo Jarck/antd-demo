@@ -61,18 +61,17 @@ class NormalLoginForm extends React.Component {
   // 修改短信验证码
   changeCaptcha = (e) => {
     var self = this;
-    let captcha = e.target.value;
-    const { mobile } = self.props.login;
+    let auth_code = e.target.value;
 
-    if (captcha.length === 6) {
-      self.props.actions.changeCaptchaSucc(captcha);
+    if (auth_code.length === 6) {
+      self.props.actions.changeAuthCodeSucc(auth_code);
     } else {
-      self.props.actions.changeCaptchaFail();
+      self.props.actions.changeAuthCodeFail();
     }
   }
 
   render(){
-    const { mobile, captcha_modalable, captcha_state, loginable, count } = this.props.login;
+    const { captcha_modalable, auth_code_state, loginable, count } = this.props.login;
     const { getFieldDecorator } = this.props.form;
 
     let text = '获取验证码';
@@ -81,27 +80,33 @@ class NormalLoginForm extends React.Component {
     // 1、手机号验证通过, 未点击"获取验证码"按钮
     // 2、手机号验证通过, 已点击"获取验证码"按钮
     // 3、手机号未验证通过, default
-    if (captcha_state === 'tobe_send') {
+    if (auth_code_state === 'waiting') {
+      disabled = true;
+    } else if (auth_code_state === 'to_send') {
       disabled = false;
-    } else if (captcha_state === 'Sending') {
+    } else if (auth_code_state === 'sent') {
       disabled = true;
       text = `${count}秒后重发`;
+    } else if (auth_code_state === 'failed') {
+      disabled = true;
+    } else {
+      disabled = true;
     }
 
     const captcha_modal = captcha_modalable ? <Captcha sendCode={this.sendCode} showable={captcha_modalable} cancel={this.cancelCaptchaModal} /> : null
 
     return (
-      <div>
+      <div className="login">
         { captcha_modal }
-        <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form onSubmit={ this.handleSubmit } className="login-form">
           <FormItem>
             {getFieldDecorator('phone', {
               rules: [{ required: true, message: '请输入手机号！' }],
             })(
               <Input prefix={<Icon type="mobile" style={{ fontSize: 13 }} />}
                 placeholder="已验证手机号"
-                onChange={this.changeMobile}
-                maxLength={11}
+                onChange={ this.changeMobile }
+                maxLength={ 11 }
               />
             )}
           </FormItem>
@@ -109,11 +114,11 @@ class NormalLoginForm extends React.Component {
             {getFieldDecorator('captcha', {
               rules: [{ required: true, message: '请输入短信验证码！' }]
             })(
-              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-                suffix={<Button onClick={this.setCaptchaImg} disabled={disabled}>{text}</Button>}
+              <Input prefix={ <Icon type="lock" style={{ fontSize: 13 }} />}
+                suffix={ <Button onClick={ this.setCaptchaImg } disabled={ disabled }>{ text }</Button> }
                 placeholder="短信验证码"
-                onChange={this.changeCaptcha}
-                maxLength={6}
+                onChange={ this.changeCaptcha }
+                maxLength={ 6 }
               />
             )}
           </FormItem>
@@ -124,7 +129,7 @@ class NormalLoginForm extends React.Component {
             })(
               <Checkbox>记住我</Checkbox>
             )}
-            <Button type="primary" htmlType="submit" className="login-form-button" disabled={loginable}>
+            <Button type="primary" htmlType="submit" className="login-form-button" disabled={ loginable }>
               登录
             </Button>
           </FormItem>
@@ -141,7 +146,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  // actions: bindActionCreators(LoginAction, dispatch)
   actions: bindActionCreators(Object.assign({}, LoginAction), dispatch)
 })
 

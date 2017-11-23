@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Particles from 'react-particles-js';
 
+import './App.css';
 import WrappendNormalLoginForm from './login/Login.js'
-// const WrappendNormalLoginForm = import("./login/Login.js")
 
 class App extends Component {
   render() {
@@ -19,7 +18,27 @@ class App extends Component {
         </p>
       </div>
       */
-      <WrappendNormalLoginForm />
+      <div>
+        <div>
+          <WrappendNormalLoginForm />
+        </div>
+        <div>
+          <Particles
+            params={{
+                    particles: {
+                      line_linked: {
+                        shadow: {
+                          enable: true,
+                          color: "#3CA9D1",
+                          blur: 5
+                        }
+                      }
+                    }
+                  }}
+            style={{width:'100%'} }
+          />
+        </div>
+      </div>
     );
   }
 }

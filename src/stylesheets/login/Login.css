@@ -1,3 +1,18 @@
+div.login {
+  position: absolute;
+  width: 360px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  transform-origin: center;
+}
+
+.ant-input-suffix .ant-btn {
+  border: none;
+  background: none;
+}
+
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
 }
