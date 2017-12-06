@@ -7,7 +7,7 @@ var Fetch = {
   // GET请求
   get(path) {
     return new Promise((resolve, reject) => {
-      fetch(`$(API_URL)/${path}`, {
+      fetch(`${API_URL}/${path}`, {
         headers: new Headers({
           'skio-token': localStorage.getItem('skio-token'),
           'Accept': 'application/json',
